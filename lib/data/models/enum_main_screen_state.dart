@@ -1,0 +1,3 @@
+enum EnumMainScreenState{
+  splash, mainScreen
+}
