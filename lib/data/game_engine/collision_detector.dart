@@ -1,5 +1,6 @@
 import 'package:flutris/data/game_engine/engine_helpers.dart';
 import 'package:flutris/data/models/model_game_block.dart';
+import 'package:flutris/data/models/type_game_state.dart';
 import 'package:flutter/material.dart';
 
 class CollisionDetector{
@@ -7,7 +8,7 @@ class CollisionDetector{
   CollisionDetector({required this.gridSize});
 
 
-  bool detectCollision(ModelGameBlock activeBlock, Map<int,Map<int, int>> gameState){
+  bool detectCollision(ModelGameBlock activeBlock, GameState gameState){
     var bottomY = (activeBlock.heightCount) + (activeBlock.position.dy);
     if (bottomY == gridSize.height) {
       return true;
@@ -22,7 +23,7 @@ class CollisionDetector{
     return false;
   }
 
-  List<int> detectSuccess(Map<int,Map<int, int>> gameState){
+  List<int> detectSuccess(GameState gameState){
     List<int> successfulRows = [];
     for (var y in gameState.keys) {
       if (!gameState[y]!.containsValue(0)) {

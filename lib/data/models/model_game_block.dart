@@ -178,3 +178,20 @@ class ModelGameBlockTheta extends ModelGameBlock{
     return copy;
   }
 }
+
+class ModelGameBlockSingle extends ModelGameBlock{
+  @override
+  final Color color;
+  ModelGameBlockSingle(this.color);
+
+  @override
+  List<List<int>> get defaultConfiguration => [[0,1]];
+
+  @override
+  ModelGameBlock copyWith({Offset? position, EnumBlockRotationState? rotation}) {
+    var copy = ModelGameBlockSingle(color);
+    copy.position = position ?? this.position;
+    copy.rotationDegrees = rotation ?? rotationDegrees;
+    return copy;
+  }
+}

@@ -1,7 +1,9 @@
+import 'package:flutris/data/game_engine/game_state_engine.dart';
 import 'package:flutris/data/models/model_game_block.dart';
 import 'package:flutris/data/models/model_game_configuration.dart';
 import 'package:flutris/presentation/screens/game/bloc/game_engine_bloc.dart';
 import 'package:flutris/presentation/widgets/widget_game_block.dart';
+import 'package:flutris/presentation/widgets/widget_static_blocks.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -23,6 +25,9 @@ class _ScreenGameState extends State<ScreenGame> {
 
   List<ModelGameBlock> availableBlocks = [];
   bool isGameRunning = false;
+
+  late final GameStateEngine _engine = GameStateEngine(gridSize: configuration.gridSize);
+
   @override
   void initState() {
     super.initState();
@@ -32,6 +37,16 @@ class _ScreenGameState extends State<ScreenGame> {
         singleBlockSize = Size(screenSize.width / configuration.gridSize.width, screenSize.height / configuration.gridSize.height);
       });
     });
+
+    var block1 = ModelGameBlockSquare();
+    for(var i = 0;i<configuration.gridSize.width.toInt() / block1.widthCount; i++){
+      var block = ModelGameBlockSquare();
+      block.position = Offset((block.widthCount * i).toDouble(), 22);
+      _engine.addBlockToState(block);
+    }
+    var block = ModelGameBlockZeta();
+    block.position = Offset(4,8);
+    _engine.addBlockToState(block);
   }
 
   void _handleBlocStates(BuildContext context, GameEngineState state) {
@@ -85,10 +100,11 @@ class _ScreenGameState extends State<ScreenGame> {
   }
 
   Widget _gameState(){
-    return Stack(
-      children: availableBlocks.map((gameBlock)=>WidgetGameBlock(
-        key: ObjectKey(gameBlock.id),
-        gameBlock: gameBlock, singleBlockSize: singleBlockSize!)).toList(),
-    );
+    return WidgetStaticBlocks(gameState: _engine.currentState(), singleBlockSize: singleBlockSize!);
+    // return Stack(
+    //   children: availableBlocks.map((gameBlock)=>WidgetGameBlock(
+    //     key: ObjectKey(gameBlock.id),
+    //     gameBlock: gameBlock, singleBlockSize: singleBlockSize!)).toList(),
+    // );
   }
 }

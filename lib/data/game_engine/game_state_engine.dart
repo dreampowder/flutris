@@ -5,12 +5,13 @@ import 'dart:ui';
 import 'package:flutris/data/game_engine/collision_detector.dart';
 import 'package:flutris/data/game_engine/engine_helpers.dart';
 import 'package:flutris/data/models/model_game_block.dart';
+import 'package:flutris/data/models/type_game_state.dart';
 import 'package:flutter/foundation.dart';
 
 class GameStateEngine{
   final Size gridSize;
   final  Random random = Random(DateTime.now().millisecondsSinceEpoch);
-  late final Map<int,Map<int, int>> _gameState;
+  late final GameState _gameState;
   late final CollisionDetector collisionDetector;
   GameStateEngine({required this.gridSize}){
     collisionDetector = CollisionDetector(gridSize: gridSize);
@@ -22,7 +23,7 @@ class GameStateEngine{
 
   ModelGameBlock? activeBlock;
 
-  Map<int,Map<int, int>> currentState(){
+  GameState currentState(){
     return _gameState;
   }
 
@@ -52,6 +53,7 @@ class GameStateEngine{
   }
 
   void addBlockToState(ModelGameBlock updatedBlock){
+    debugPrint("Adding color: ${updatedBlock.color}");
     for (var coords in updatedBlock.filledCoordinates) {
       _gameState[coords.y]?[coords.x] = coords.color;
     }

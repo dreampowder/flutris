@@ -1,0 +1,1 @@
+typedef GameState = Map<int,Map<int, int>>;
