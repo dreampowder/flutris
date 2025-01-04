@@ -1,9 +1,19 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 
 enum EnumBlockRotationState{
   zero, deg90, deg180,deg270;
+}
+
+class Coords{
+  int x;
+  int y;
+  int color;
+  Coords(this.x, this.y, this.color);
+
+  @override
+  String toString() {
+    return "[$x,$y]";
+  }
 }
 
 abstract class ModelGameBlock{
@@ -13,7 +23,10 @@ abstract class ModelGameBlock{
   // Constructor for assigning a new UniqueKey each time a block is created
   ModelGameBlock() : id = UniqueKey();
 
+  ModelGameBlock copyWith({Offset? position, EnumBlockRotationState? rotation});
+
   Offset position = Offset.zero;
+
 
   List<List<int>> get defaultConfiguration;
   List<List<int>> get configuration{
@@ -28,6 +41,21 @@ abstract class ModelGameBlock{
         return rotate90(rotate90(rotate90(defaultConfiguration)));
     }
   }
+
+  List<Coords> get filledCoordinates{
+    var config = configuration;
+    List<Coords> coords = [];
+    for (var y = 0; y<config.length; y++) {
+      for(var x = 0;x<config[y].length;x++){
+        var isFilled = config[y][x] == 1;
+        if (isFilled) {
+          coords.add(Coords(x+position.dx.toInt(), y+position.dy.toInt(), intColor));
+        }
+      }
+    }
+    return coords;
+  }
+
   Color get color;
   EnumBlockRotationState rotationDegrees = EnumBlockRotationState.zero;
 
@@ -50,6 +78,15 @@ abstract class ModelGameBlock{
   int get widthCount => configuration.first.length;
   int get heightCount => configuration.length;
 
+  int get intColor {
+    return ((color.a * 255).toInt() << 24) |
+    ((color.r * 255).toInt() << 16) |
+    ((color.g * 255).toInt() << 8)  |
+    ((color.b * 255).toInt());
+  }
+
+
+
   static List<ModelGameBlock> get allBlocks => [
     ModelGameBlockTheta(),
     ModelGameBlockLambda(),
@@ -57,6 +94,8 @@ abstract class ModelGameBlock{
     ModelGameBlockSquare(),
     ModelGameBlockLongBrick(),
   ];
+
+
 }
 
 class ModelGameBlockLongBrick extends ModelGameBlock{
@@ -65,6 +104,14 @@ class ModelGameBlockLongBrick extends ModelGameBlock{
 
   @override
   final defaultConfiguration = [[1],[1],[1],[1]];
+
+  @override
+  ModelGameBlock copyWith({Offset? position, EnumBlockRotationState? rotation}) {
+    var copy = ModelGameBlockLongBrick();
+    copy.position = position ?? this.position;
+    copy.rotationDegrees = rotation ?? rotationDegrees;
+    return copy;
+  }
 }
 
 class ModelGameBlockSquare extends ModelGameBlock{
@@ -73,6 +120,14 @@ class ModelGameBlockSquare extends ModelGameBlock{
 
   @override
   final defaultConfiguration = [[1,1],[1,1]];
+
+  @override
+  ModelGameBlock copyWith({Offset? position, EnumBlockRotationState? rotation}) {
+    var copy = ModelGameBlockSquare();
+    copy.position = position ?? this.position;
+    copy.rotationDegrees = rotation ?? rotationDegrees;
+    return copy;
+  }
 }
 
 
@@ -82,6 +137,14 @@ class ModelGameBlockZeta extends ModelGameBlock{
 
   @override
   final defaultConfiguration = [[1,1,0],[0,1,1]];
+
+  @override
+  ModelGameBlock copyWith({Offset? position, EnumBlockRotationState? rotation}) {
+    var copy = ModelGameBlockZeta();
+    copy.position = position ?? this.position;
+    copy.rotationDegrees = rotation ?? rotationDegrees;
+    return copy;
+  }
 }
 
 class ModelGameBlockLambda extends ModelGameBlock{
@@ -90,6 +153,14 @@ class ModelGameBlockLambda extends ModelGameBlock{
 
   @override
   final defaultConfiguration = [[1,0,0],[1,1,1]];
+
+  @override
+  ModelGameBlock copyWith({Offset? position, EnumBlockRotationState? rotation}) {
+    var copy = ModelGameBlockLambda();
+    copy.position = position ?? this.position;
+    copy.rotationDegrees = rotation ?? rotationDegrees;
+    return copy;
+  }
 }
 
 class ModelGameBlockTheta extends ModelGameBlock{
@@ -98,4 +169,12 @@ class ModelGameBlockTheta extends ModelGameBlock{
 
   @override
   final defaultConfiguration = [[0,1,0],[1,1,1]];
+
+  @override
+  ModelGameBlock copyWith({Offset? position, EnumBlockRotationState? rotation}) {
+    var copy = ModelGameBlockTheta();
+    copy.position = position ?? this.position;
+    copy.rotationDegrees = rotation ?? rotationDegrees;
+    return copy;
+  }
 }

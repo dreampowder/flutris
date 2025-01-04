@@ -8,9 +8,12 @@ import 'package:flutris/data/models/model_game_configuration.dart';
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import 'dart:math' as math;
+
 part 'game_engine_event.dart';
 part 'game_engine_state.dart';
 part 'game_engine_bloc.freezed.dart';
+
 
 class GameEngineBloc extends Bloc<GameEngineEvent, GameEngineState> {
 
@@ -69,6 +72,7 @@ class GameEngineBloc extends Bloc<GameEngineEvent, GameEngineState> {
     _configuration = configuration;
     _availableBlocks.clear();
     _recreateCollisionMap();
+    _currentBlock = null;
     debugPrint("Collision Map: $collisionMap");
     gameTimer = Timer.periodic(Duration(milliseconds: configuration.tickRateInMilliSeconds), (timer){
       _gameTick();
@@ -78,12 +82,10 @@ class GameEngineBloc extends Bloc<GameEngineEvent, GameEngineState> {
   FutureOr _gameTick() async{
     if (_currentBlock == null) {
       final nextBlock = ModelGameBlock.allBlocks[_random.nextInt(ModelGameBlock.allBlocks.length)];
-      debugPrint("Adding Before: ${nextBlock.id}");
-      debugPrint("Adding: ${nextBlock.id}");
       _availableBlocks.add(nextBlock);
       var width = _configuration!.gridSize.width.toInt();
       var height = _configuration!.gridSize.height.toInt();
-      var initialOffset = Offset((width - nextBlock.widthCount)/2.0, -1);
+      var initialOffset = Offset(((width - nextBlock.widthCount)/2.0).floorToDouble(), -1);
       nextBlock.position = initialOffset;
       _currentBlock = nextBlock;
 
