@@ -3,7 +3,6 @@ import 'package:flutris/data/game_engine/engine_helpers.dart';
 import 'package:flutris/data/game_engine/game_state_engine.dart';
 import 'package:flutris/data/models/model_game_block.dart';
 import 'package:flutris/data/models/model_game_configuration.dart';
-import 'package:flutris/presentation/screens/game/bloc/game_engine_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 

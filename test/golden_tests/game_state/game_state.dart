@@ -28,7 +28,7 @@ main() {
   });
 }
 
-Widget _testBlock(GameState gameState) {
+Widget _testBlock(GameEngineState gameState) {
   return MaterialApp(
     debugShowCheckedModeBanner: false,
     home: Scaffold(

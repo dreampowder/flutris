@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 class WidgetStaticBlocks extends StatelessWidget {
 
-  final GameState gameState;
+  final GameEngineState gameState;
   final Size singleBlockSize;
   const WidgetStaticBlocks({super.key, required this.gameState, required this.singleBlockSize});
 
@@ -17,7 +17,7 @@ class WidgetStaticBlocks extends StatelessWidget {
 }
 
 class PainterGameState extends CustomPainter{
-  final GameState gameState;
+  final GameEngineState gameState;
   final Size blockSize;
 
   PainterGameState(this.blockSize, this.gameState);

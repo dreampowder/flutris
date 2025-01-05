@@ -4,6 +4,7 @@ import 'dart:ui';
 
 import 'package:flutris/data/game_engine/collision_detector.dart';
 import 'package:flutris/data/game_engine/engine_helpers.dart';
+import 'package:flutris/data/game_engine/enum_move_direction.dart';
 import 'package:flutris/data/models/model_game_block.dart';
 import 'package:flutris/data/models/type_game_state.dart';
 import 'package:flutter/foundation.dart';
@@ -11,7 +12,7 @@ import 'package:flutter/foundation.dart';
 class GameStateEngine{
   final Size gridSize;
   final  Random random = Random(DateTime.now().millisecondsSinceEpoch);
-  late final GameState _gameState;
+  late final GameEngineState _gameState;
   late final CollisionDetector collisionDetector;
   GameStateEngine({required this.gridSize}){
     collisionDetector = CollisionDetector(gridSize: gridSize);
@@ -23,7 +24,7 @@ class GameStateEngine{
 
   ModelGameBlock? activeBlock;
 
-  GameState currentState(){
+  GameEngineState currentState(){
     return _gameState;
   }
 
@@ -73,4 +74,34 @@ class GameStateEngine{
     }
   }
 
+  void moveActiveBlock(EnumMoveDirection direction){
+    if (activeBlock == null) {
+      return;
+    }
+    var position = activeBlock!.position;
+    ModelGameBlock futureBlock;
+    switch(direction){
+      case EnumMoveDirection.left:
+        futureBlock = activeBlock!.copyWith(position: Offset(position.dx - 1, position.dy));
+      case EnumMoveDirection.right:
+        futureBlock = activeBlock!.copyWith(position: Offset(position.dx + 1, position.dy));
+      case EnumMoveDirection.down:
+        // TODO: Handle this case.
+        throw UnimplementedError();
+    }
+    if (!collisionDetector.detectCollision(futureBlock, currentState())) {
+      activeBlock = futureBlock;
+    }
+  }
+
+  void rotateActiveBlock(){
+    if (activeBlock == null) {
+      return;
+    }
+    var rotation = activeBlock!.rotationDegrees;
+    ModelGameBlock futureBlock = activeBlock!.copyWith(rotation: rotation.nextRotation());
+    if (!collisionDetector.detectCollision(futureBlock, currentState())) {
+      activeBlock = futureBlock;
+    }
+  }
 }

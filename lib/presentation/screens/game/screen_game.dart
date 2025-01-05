@@ -1,15 +1,14 @@
-import 'package:flutris/data/game_engine/game_state_engine.dart';
+import 'package:flutris/data/game_engine/enum_move_direction.dart';
 import 'package:flutris/data/models/model_game_block.dart';
 import 'package:flutris/data/models/model_game_configuration.dart';
-import 'package:flutris/presentation/screens/game/bloc/game_engine_bloc.dart';
+import 'package:flutris/data/models/type_game_state.dart';
+import 'package:flutris/presentation/screens/game/bloc/game_bloc.dart';
 import 'package:flutris/presentation/widgets/widget_game_block.dart';
 import 'package:flutris/presentation/widgets/widget_static_blocks.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 class ScreenGame extends StatefulWidget {
-
   const ScreenGame({super.key});
 
   @override
@@ -18,15 +17,13 @@ class ScreenGame extends StatefulWidget {
 
 class _ScreenGameState extends State<ScreenGame> {
 
+  final GameBloc _bloc = GameBloc();
   final configuration = ModelGameConfiguration(Size(10,24), 250);
   Size? singleBlockSize;
 
-  final GameEngineBloc _bloc = GameEngineBloc();
-
-  List<ModelGameBlock> availableBlocks = [];
+  GameEngineState? gameEngineState;
+  ModelGameBlock? activeBlock;
   bool isGameRunning = false;
-
-  late final GameStateEngine _engine = GameStateEngine(gridSize: configuration.gridSize);
 
   @override
   void initState() {
@@ -37,74 +34,68 @@ class _ScreenGameState extends State<ScreenGame> {
         singleBlockSize = Size(screenSize.width / configuration.gridSize.width, screenSize.height / configuration.gridSize.height);
       });
     });
-
-    var block1 = ModelGameBlockSquare();
-    for(var i = 0;i<configuration.gridSize.width.toInt() / block1.widthCount; i++){
-      var block = ModelGameBlockSquare();
-      block.position = Offset((block.widthCount * i).toDouble(), 22);
-      _engine.addBlockToState(block);
-    }
-    var block = ModelGameBlockZeta();
-    block.position = Offset(4,8);
-    _engine.addBlockToState(block);
   }
 
-  void _handleBlocStates(BuildContext context, GameEngineState state) {
+  void _toggleGame(){
+    if (isGameRunning) {
+      _bloc.add(GameEvent.stop());
+    }else{
+      _bloc.add(GameEvent.startGame(configuration));
+    }
+    isGameRunning = !isGameRunning;
+  }
+
+  void _move(EnumMoveDirection direction){
+    _bloc.add(GameEvent.move(direction));
+  }
+
+  void _rotate(){
+    _bloc.add(GameEvent.rotate());
+  }
+
+  void _handleBlocStates(BuildContext context, GameState state) {
     state.when(
         initial: (){},
-        gameUpdate: (_, blocks){
-          debugPrint("Update State");
+        tick: (currentBlock, gameEngineState){
           setState(() {
-            availableBlocks = blocks;
+            activeBlock = currentBlock;
+            this.gameEngineState = gameEngineState;
           });
         }
     );
   }
 
-  void _toggleGame(){
-    if (!isGameRunning) {
-      _bloc.add(GameEngineEvent.start(configuration));
-    }else{
-      _bloc.add(GameEngineEvent.stop());
-    }
-    isGameRunning = !isGameRunning;
-  }
-
-  void _move(bool isLeft){
-    _bloc.add(GameEngineEvent.moveCurrentBlock(isLeft));
-  }
-  
   @override
   Widget build(BuildContext context) {
-    var block = ModelGameBlockLongBrick();
-    block.rotationDegrees = EnumBlockRotationState.zero;
     return Scaffold(
-      floatingActionButton: Row(
+      floatingActionButton: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          FloatingActionButton(onPressed: ()=>_move(true), child: Icon(Icons.arrow_left),elevation: 1,),
-          FloatingActionButton(onPressed: _toggleGame, child: Icon(Icons.refresh),elevation: 0),
-          FloatingActionButton(onPressed: ()=>_move(false), child: Icon(Icons.arrow_right),elevation: 1,),
+          FloatingActionButton(onPressed: _toggleGame,elevation: 1, child: Icon(Icons.refresh),),
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              FloatingActionButton(onPressed: ()=>_move(EnumMoveDirection.left),elevation: 1, child: Icon(Icons.arrow_left),),
+              FloatingActionButton(onPressed: _rotate,elevation: 0, child: Icon(Icons.arrow_drop_up)),
+              FloatingActionButton(onPressed: ()=>_move(EnumMoveDirection.right),elevation: 1, child: Icon(Icons.arrow_right),),
+            ],
+          ),
         ],
       ),
       body: BlocListener(
-        bloc: _bloc,
         listener: _handleBlocStates,
-        child: singleBlockSize == null ? _emptyState() : _gameState(),
+        bloc: _bloc,
+        child: singleBlockSize == null ? Container() : _gameBody(),
       ),
     );
   }
 
-  Widget _emptyState(){
-    return Container();
-  }
-
-  Widget _gameState(){
-    return WidgetStaticBlocks(gameState: _engine.currentState(), singleBlockSize: singleBlockSize!);
-    // return Stack(
-    //   children: availableBlocks.map((gameBlock)=>WidgetGameBlock(
-    //     key: ObjectKey(gameBlock.id),
-    //     gameBlock: gameBlock, singleBlockSize: singleBlockSize!)).toList(),
-    // );
+  Widget _gameBody(){
+    return Stack(
+      children: [
+        if(activeBlock != null)WidgetGameBlock(gameBlock: activeBlock!, singleBlockSize: singleBlockSize!),
+        if(gameEngineState != null)WidgetStaticBlocks(gameState: gameEngineState!, singleBlockSize: singleBlockSize!)
+      ],
+    );
   }
 }

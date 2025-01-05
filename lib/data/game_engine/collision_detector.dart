@@ -8,9 +8,12 @@ class CollisionDetector{
   CollisionDetector({required this.gridSize});
 
 
-  bool detectCollision(ModelGameBlock activeBlock, GameState gameState){
+  bool detectCollision(ModelGameBlock activeBlock, GameEngineState gameState){
     var bottomY = (activeBlock.heightCount) + (activeBlock.position.dy);
     if (bottomY == gridSize.height) {
+      return true;
+    }
+    if (activeBlock.position.dx < 0 || (activeBlock.position.dx + activeBlock.widthCount) > gridSize.width){
       return true;
     }
     // EngineHelper.debugPrintCollisionMap(   gridSize, gameState, activeBlockCoords: activeBlock.filledCoordinates);
@@ -23,7 +26,7 @@ class CollisionDetector{
     return false;
   }
 
-  List<int> detectSuccess(GameState gameState){
+  List<int> detectSuccess(GameEngineState gameState){
     List<int> successfulRows = [];
     for (var y in gameState.keys) {
       if (!gameState[y]!.containsValue(0)) {

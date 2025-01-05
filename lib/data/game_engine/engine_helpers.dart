@@ -3,7 +3,7 @@ import 'package:flutris/data/models/type_game_state.dart';
 import 'package:flutter/material.dart';
 
 class EngineHelper{
-  static void debugPrintCollisionMap(Size gridSize, GameState collisionMap, {List<Coords>? activeBlockCoords}) {
+  static void debugPrintCollisionMap(Size gridSize, GameEngineState collisionMap, {List<Coords>? activeBlockCoords}) {
     var availableColors = ["🟥","🟦","🟪","🟩","🟨"];
     var map = collisionMap.map((key, value) => MapEntry(key, Map<int, int>.from(value)));
     if (activeBlockCoords != null) {

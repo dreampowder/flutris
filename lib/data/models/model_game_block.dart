@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 
 enum EnumBlockRotationState{
   zero, deg90, deg180,deg270;
+
+  EnumBlockRotationState nextRotation(){
+    return EnumBlockRotationState.values[(index+1)%EnumBlockRotationState.values.length];
+  }
 }
 
 class Coords{

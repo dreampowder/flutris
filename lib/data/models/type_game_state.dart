@@ -1,1 +1,1 @@
-typedef GameState = Map<int,Map<int, int>>;
+typedef GameEngineState = Map<int,Map<int, int>>;
