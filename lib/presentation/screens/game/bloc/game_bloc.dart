@@ -51,7 +51,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     }
     var gameState = gameEngine!.currentState();
     var currentBlock = gameEngine!.activeBlock;
-    add(GameEvent.publishState(GameState.tick(currentBlock, gameState)));
+    add(GameEvent.publishState(GameState.tick(currentBlock, gameState, gameEngine?.score ?? 0)));
   }
 
 }

@@ -14,6 +14,9 @@ class GameStateEngine{
   final  Random random = Random(DateTime.now().millisecondsSinceEpoch);
   late final GameEngineState _gameState;
   late final CollisionDetector collisionDetector;
+
+  int score = 0;
+
   GameStateEngine({required this.gridSize}){
     collisionDetector = CollisionDetector(gridSize: gridSize);
     _gameState = {};
@@ -49,7 +52,10 @@ class GameStateEngine{
     }
     debugPrint("Tick Complete");
     EngineHelper.debugPrintCollisionMap(gridSize, _gameState, activeBlockCoords: activeBlock?.filledCoordinates);
-    collapseRows(collisionDetector.detectSuccess(_gameState));
+    ///Collapse rows until no more success left!
+    while(collisionDetector.detectSuccess(_gameState).isNotEmpty){
+      collapseRows(collisionDetector.detectSuccess(_gameState));
+    }
     EngineHelper.debugPrintCollisionMap(gridSize, _gameState, activeBlockCoords: activeBlock?.filledCoordinates);
   }
 
@@ -72,6 +78,9 @@ class GameStateEngine{
         _gameState[0]?[x] = 0;
       }
     }
+    var baseScore = 100;
+    var multiplier = 1.5; ///Users will earn more points by triggering more rows at one time.
+    score += (baseScore * pow(multiplier, rows.length - 1)).toInt();
   }
 
   void moveActiveBlock(EnumMoveDirection direction){

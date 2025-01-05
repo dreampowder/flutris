@@ -1000,7 +1000,7 @@ mixin _$GameState {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function(ModelGameBlock? activeBlock,
-            Map<int, Map<int, int>> gameEngineState)
+            Map<int, Map<int, int>> gameEngineState, int score)
         tick,
   }) =>
       throw _privateConstructorUsedError;
@@ -1008,7 +1008,7 @@ mixin _$GameState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function(ModelGameBlock? activeBlock,
-            Map<int, Map<int, int>> gameEngineState)?
+            Map<int, Map<int, int>> gameEngineState, int score)?
         tick,
   }) =>
       throw _privateConstructorUsedError;
@@ -1016,7 +1016,7 @@ mixin _$GameState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function(ModelGameBlock? activeBlock,
-            Map<int, Map<int, int>> gameEngineState)?
+            Map<int, Map<int, int>> gameEngineState, int score)?
         tick,
     required TResult orElse(),
   }) =>
@@ -1105,7 +1105,7 @@ class _$InitialImpl implements _Initial {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function(ModelGameBlock? activeBlock,
-            Map<int, Map<int, int>> gameEngineState)
+            Map<int, Map<int, int>> gameEngineState, int score)
         tick,
   }) {
     return initial();
@@ -1116,7 +1116,7 @@ class _$InitialImpl implements _Initial {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function(ModelGameBlock? activeBlock,
-            Map<int, Map<int, int>> gameEngineState)?
+            Map<int, Map<int, int>> gameEngineState, int score)?
         tick,
   }) {
     return initial?.call();
@@ -1127,7 +1127,7 @@ class _$InitialImpl implements _Initial {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function(ModelGameBlock? activeBlock,
-            Map<int, Map<int, int>> gameEngineState)?
+            Map<int, Map<int, int>> gameEngineState, int score)?
         tick,
     required TResult orElse(),
   }) {
@@ -1180,7 +1180,9 @@ abstract class _$$TickImplCopyWith<$Res> {
       __$$TickImplCopyWithImpl<$Res>;
   @useResult
   $Res call(
-      {ModelGameBlock? activeBlock, Map<int, Map<int, int>> gameEngineState});
+      {ModelGameBlock? activeBlock,
+      Map<int, Map<int, int>> gameEngineState,
+      int score});
 }
 
 /// @nodoc
@@ -1197,6 +1199,7 @@ class __$$TickImplCopyWithImpl<$Res>
   $Res call({
     Object? activeBlock = freezed,
     Object? gameEngineState = null,
+    Object? score = null,
   }) {
     return _then(_$TickImpl(
       freezed == activeBlock
@@ -1207,6 +1210,10 @@ class __$$TickImplCopyWithImpl<$Res>
           ? _value._gameEngineState
           : gameEngineState // ignore: cast_nullable_to_non_nullable
               as Map<int, Map<int, int>>,
+      null == score
+          ? _value.score
+          : score // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 }
@@ -1214,8 +1221,8 @@ class __$$TickImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$TickImpl implements _Tick {
-  const _$TickImpl(
-      this.activeBlock, final Map<int, Map<int, int>> gameEngineState)
+  const _$TickImpl(this.activeBlock,
+      final Map<int, Map<int, int>> gameEngineState, this.score)
       : _gameEngineState = gameEngineState;
 
   @override
@@ -1229,8 +1236,11 @@ class _$TickImpl implements _Tick {
   }
 
   @override
+  final int score;
+
+  @override
   String toString() {
-    return 'GameState.tick(activeBlock: $activeBlock, gameEngineState: $gameEngineState)';
+    return 'GameState.tick(activeBlock: $activeBlock, gameEngineState: $gameEngineState, score: $score)';
   }
 
   @override
@@ -1241,12 +1251,13 @@ class _$TickImpl implements _Tick {
             (identical(other.activeBlock, activeBlock) ||
                 other.activeBlock == activeBlock) &&
             const DeepCollectionEquality()
-                .equals(other._gameEngineState, _gameEngineState));
+                .equals(other._gameEngineState, _gameEngineState) &&
+            (identical(other.score, score) || other.score == score));
   }
 
   @override
   int get hashCode => Object.hash(runtimeType, activeBlock,
-      const DeepCollectionEquality().hash(_gameEngineState));
+      const DeepCollectionEquality().hash(_gameEngineState), score);
 
   /// Create a copy of GameState
   /// with the given fields replaced by the non-null parameter values.
@@ -1261,10 +1272,10 @@ class _$TickImpl implements _Tick {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function(ModelGameBlock? activeBlock,
-            Map<int, Map<int, int>> gameEngineState)
+            Map<int, Map<int, int>> gameEngineState, int score)
         tick,
   }) {
-    return tick(activeBlock, gameEngineState);
+    return tick(activeBlock, gameEngineState, score);
   }
 
   @override
@@ -1272,10 +1283,10 @@ class _$TickImpl implements _Tick {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function(ModelGameBlock? activeBlock,
-            Map<int, Map<int, int>> gameEngineState)?
+            Map<int, Map<int, int>> gameEngineState, int score)?
         tick,
   }) {
-    return tick?.call(activeBlock, gameEngineState);
+    return tick?.call(activeBlock, gameEngineState, score);
   }
 
   @override
@@ -1283,12 +1294,12 @@ class _$TickImpl implements _Tick {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function(ModelGameBlock? activeBlock,
-            Map<int, Map<int, int>> gameEngineState)?
+            Map<int, Map<int, int>> gameEngineState, int score)?
         tick,
     required TResult orElse(),
   }) {
     if (tick != null) {
-      return tick(activeBlock, gameEngineState);
+      return tick(activeBlock, gameEngineState, score);
     }
     return orElse();
   }
@@ -1326,11 +1337,14 @@ class _$TickImpl implements _Tick {
 }
 
 abstract class _Tick implements GameState {
-  const factory _Tick(final ModelGameBlock? activeBlock,
-      final Map<int, Map<int, int>> gameEngineState) = _$TickImpl;
+  const factory _Tick(
+      final ModelGameBlock? activeBlock,
+      final Map<int, Map<int, int>> gameEngineState,
+      final int score) = _$TickImpl;
 
   ModelGameBlock? get activeBlock;
   Map<int, Map<int, int>> get gameEngineState;
+  int get score;
 
   /// Create a copy of GameState
   /// with the given fields replaced by the non-null parameter values.

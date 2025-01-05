@@ -3,6 +3,7 @@ import 'package:flutris/data/models/model_game_block.dart';
 import 'package:flutris/data/models/model_game_configuration.dart';
 import 'package:flutris/data/models/type_game_state.dart';
 import 'package:flutris/presentation/screens/game/bloc/game_bloc.dart';
+import 'package:flutris/presentation/screens/game/widgets/widget_game_grid.dart';
 import 'package:flutris/presentation/widgets/widget_game_block.dart';
 import 'package:flutris/presentation/widgets/widget_static_blocks.dart';
 import 'package:flutter/material.dart';
@@ -24,6 +25,7 @@ class _ScreenGameState extends State<ScreenGame> {
   GameEngineState? gameEngineState;
   ModelGameBlock? activeBlock;
   bool isGameRunning = false;
+  int score = 0;
 
   @override
   void initState() {
@@ -56,10 +58,11 @@ class _ScreenGameState extends State<ScreenGame> {
   void _handleBlocStates(BuildContext context, GameState state) {
     state.when(
         initial: (){},
-        tick: (currentBlock, gameEngineState){
+        tick: (currentBlock, gameEngineState, score){
           setState(() {
             activeBlock = currentBlock;
             this.gameEngineState = gameEngineState;
+            this.score = score;
           });
         }
     );
@@ -68,20 +71,6 @@ class _ScreenGameState extends State<ScreenGame> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          FloatingActionButton(onPressed: _toggleGame,elevation: 1, child: Icon(Icons.refresh),),
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              FloatingActionButton(onPressed: ()=>_move(EnumMoveDirection.left),elevation: 1, child: Icon(Icons.arrow_left),),
-              FloatingActionButton(onPressed: _rotate,elevation: 0, child: Icon(Icons.arrow_drop_up)),
-              FloatingActionButton(onPressed: ()=>_move(EnumMoveDirection.right),elevation: 1, child: Icon(Icons.arrow_right),),
-            ],
-          ),
-        ],
-      ),
       body: BlocListener(
         listener: _handleBlocStates,
         bloc: _bloc,
@@ -91,11 +80,59 @@ class _ScreenGameState extends State<ScreenGame> {
   }
 
   Widget _gameBody(){
-    return Stack(
-      children: [
-        if(activeBlock != null)WidgetGameBlock(gameBlock: activeBlock!, singleBlockSize: singleBlockSize!),
-        if(gameEngineState != null)WidgetStaticBlocks(gameState: gameEngineState!, singleBlockSize: singleBlockSize!)
-      ],
+    return SizedBox.expand(
+      child: Stack(
+        children: [
+          Positioned.fill(child: WidgetGameGrid(gameGridSize: configuration.gridSize, singleBLockSize: singleBlockSize!,)),
+          if(activeBlock != null)WidgetGameBlock(gameBlock: activeBlock!, singleBlockSize: singleBlockSize!),
+          if(gameEngineState != null)WidgetStaticBlocks(gameState: gameEngineState!, singleBlockSize: singleBlockSize!),
+          Positioned(
+            left: 0,
+            right: 0,
+            top: 0,
+            child: SafeArea(child: topControls())
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget topControls(){
+      return Padding(
+        padding: EdgeInsets.symmetric(horizontal: 16),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _scoreBoard(),
+            Spacer(),
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    FloatingActionButton(onPressed: ()=>_move(EnumMoveDirection.left),elevation: 1, child: Icon(Icons.arrow_left),),
+                    FloatingActionButton(onPressed: _rotate,elevation: 0, child: Icon(Icons.arrow_drop_up)),
+                    FloatingActionButton(onPressed: ()=>_move(EnumMoveDirection.right),elevation: 1, child: Icon(Icons.arrow_right),),
+                  ],
+                ),
+                FloatingActionButton(onPressed: _toggleGame,elevation: 0, child: Icon(Icons.sync)),
+              ],
+            ),
+          ],
+        ),
+      );
+  }
+
+  Widget _scoreBoard(){
+    return Container(
+      width: 100,
+      height: 44,
+      decoration: BoxDecoration(
+        color: Colors.amberAccent,
+        borderRadius: BorderRadius.circular(16)
+      ),
+      child: Center(child: Text("$score", style: Theme.of(context).textTheme.titleLarge,)),
     );
   }
 }
