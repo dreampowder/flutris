@@ -5,7 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   testWidgets("Game Block Golden Tests", (WidgetTester tester) async{
-
+    tester.view.physicalSize = Size(1170, 2532);
     for (var block in ModelGameBlock.allBlocks) {
       var widget = _testBlock(block);
       await tester.pumpWidget(widget);

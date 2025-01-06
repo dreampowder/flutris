@@ -9,6 +9,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 main() {
   testWidgets("Game State Widget Golden Tests", (WidgetTester tester) async{
+    tester.view.physicalSize = Size(1170, 2532);
     ModelGameConfiguration configuration = ModelGameConfiguration(Size(10,24), 250);
     GameStateEngine stateEngine = GameStateEngine(gridSize: configuration.gridSize);
     var block1 = ModelGameBlockSquare();
