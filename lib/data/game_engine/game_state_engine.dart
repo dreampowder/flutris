@@ -43,16 +43,13 @@ class GameStateEngine{
     var testCopy = activeBlock!.copyWith(position: nextPosition);
     var doesHaveCollision = collisionDetector.detectCollision(testCopy, _gameState);
     debugPrint("Does have collision: $doesHaveCollision");
-    if (doesHaveCollision) { ///Save the object as static objects and send a new one.
-      debugPrint("Collision detected, saving object");
+    if (doesHaveCollision) {
       addBlockToState(activeBlock!);
       activeBlock = null;
     }else{
       activeBlock = testCopy;
     }
-    debugPrint("Tick Complete");
     EngineHelper.debugPrintCollisionMap(gridSize, _gameState, activeBlockCoords: activeBlock?.filledCoordinates);
-    ///Collapse rows until no more success left!
     while(collisionDetector.detectSuccess(_gameState).isNotEmpty){
       collapseRows(collisionDetector.detectSuccess(_gameState));
     }
@@ -79,7 +76,7 @@ class GameStateEngine{
       }
     }
     var baseScore = 100;
-    var multiplier = 1.5; ///Users will earn more points by triggering more rows at one time.
+    var multiplier = 1.5;
     score += (baseScore * pow(multiplier, rows.length - 1)).toInt();
   }
 
