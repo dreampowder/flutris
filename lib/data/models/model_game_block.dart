@@ -98,8 +98,6 @@ abstract class ModelGameBlock{
     ModelGameBlockSquare(),
     ModelGameBlockLongBrick(),
   ];
-
-
 }
 
 class ModelGameBlockLongBrick extends ModelGameBlock{
