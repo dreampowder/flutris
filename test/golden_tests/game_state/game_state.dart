@@ -22,7 +22,6 @@ main() {
     var block = ModelGameBlockZeta();
     block.position = Offset(4,8);
     stateEngine.addBlockToState(block);
-    // EngineHelper.debugPrintCollisionMap(configuration.gridSize, stateEngine.currentState());
     var widget = _testBlock(stateEngine.currentState());
     await tester.pumpWidget(widget);
     await expectLater(find.byWidget(widget),
@@ -36,7 +35,6 @@ Widget _testBlock(GameEngineState gameState) {
     home: Scaffold(
       body: Builder(
         builder: (context) {
-          // const screenSize = Size(375, 812);
           var gridSize = Size(10,24);
           var screenSize = MediaQuery.of(context).size;
           var singleBlockSize = Size(screenSize.width / gridSize.width, screenSize.height / gridSize.height);

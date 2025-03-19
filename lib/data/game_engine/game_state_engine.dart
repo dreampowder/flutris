@@ -49,11 +49,11 @@ class GameStateEngine{
     }else{
       activeBlock = testCopy;
     }
-    EngineHelper.debugPrintCollisionMap(gridSize, _gameState, activeBlockCoords: activeBlock?.filledCoordinates);
+    // EngineHelper.debugPrintCollisionMap(gridSize, _gameState, activeBlockCoords: activeBlock?.filledCoordinates);
     while(collisionDetector.detectSuccess(_gameState).isNotEmpty){
       collapseRows(collisionDetector.detectSuccess(_gameState));
     }
-    EngineHelper.debugPrintCollisionMap(gridSize, _gameState, activeBlockCoords: activeBlock?.filledCoordinates);
+    // EngineHelper.debugPrintCollisionMap(gridSize, _gameState, activeBlockCoords: activeBlock?.filledCoordinates);
   }
 
   void addBlockToState(ModelGameBlock updatedBlock){
