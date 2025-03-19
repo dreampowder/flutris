@@ -22,7 +22,7 @@ main() {
     var block = ModelGameBlockZeta();
     block.position = Offset(4,8);
     stateEngine.addBlockToState(block);
-    EngineHelper.debugPrintCollisionMap(configuration.gridSize, stateEngine.currentState());
+    // EngineHelper.debugPrintCollisionMap(configuration.gridSize, stateEngine.currentState());
     var widget = _testBlock(stateEngine.currentState());
     await tester.pumpWidget(widget);
     await expectLater(find.byWidget(widget),

@@ -18,6 +18,7 @@ void main() {
 
 Widget _testBlock(ModelGameBlock gameBlock) {
   return MaterialApp(
+    debugShowCheckedModeBanner: false,
     home: Scaffold(
       body: Builder(
         builder: (context) {
