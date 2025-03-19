@@ -36,8 +36,6 @@ class PainterGameState extends CustomPainter{
 
   void drawSingleBlock(Canvas canvas, Color color, Offset position){
 
-    debugPrint("Offset:$position");
-
     final Paint blockPaint = Paint()
       ..color = color
       ..style = PaintingStyle.fill;

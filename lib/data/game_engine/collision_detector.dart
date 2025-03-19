@@ -18,7 +18,6 @@ class CollisionDetector{
     }
     // EngineHelper.debugPrintCollisionMap(   gridSize, gameState, activeBlockCoords: activeBlock.filledCoordinates);
     for (var coords in activeBlock.filledCoordinates) {
-      debugPrint("Coords: $coords -> ${gameState[coords.x]?[coords.y]}");
       if ((gameState[coords.y]?[coords.x] ?? 0) != 0) {
         return true;
       }

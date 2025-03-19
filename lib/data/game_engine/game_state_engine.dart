@@ -42,7 +42,6 @@ class GameStateEngine{
     var nextPosition = Offset(activeBlock!.position.dx, activeBlock!.position.dy+1);
     var testCopy = activeBlock!.copyWith(position: nextPosition);
     var doesHaveCollision = collisionDetector.detectCollision(testCopy, _gameState);
-    debugPrint("Does have collision: $doesHaveCollision");
     if (doesHaveCollision) {
       addBlockToState(activeBlock!);
       activeBlock = null;

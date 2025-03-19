@@ -1,5 +1,5 @@
 import 'package:flutris/data/models/enum_main_screen_state.dart';
-import 'package:flutris/presentation/screens/game/screen_game.dart';
+import 'package:flutris/presentation/screens/home/screen_home.dart';
 import 'package:flutris/presentation/screens/splash/screen_splash.dart';
 import 'package:flutter/material.dart';
 
@@ -26,7 +26,7 @@ class _ScreenMainState extends State<ScreenMain> {
       case EnumMainScreenState.splash:
         return ScreenSplash();
       case EnumMainScreenState.mainScreen:
-        return ScreenGame();
+        return ScreenHome();
     }
   }
 }

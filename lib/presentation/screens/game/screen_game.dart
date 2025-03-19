@@ -8,6 +8,7 @@ import 'package:flutris/presentation/widgets/widget_game_block.dart';
 import 'package:flutris/presentation/widgets/widget_static_blocks.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 class ScreenGame extends StatefulWidget {
   const ScreenGame({super.key});
@@ -20,12 +21,20 @@ class _ScreenGameState extends State<ScreenGame> {
 
   final GameBloc _bloc = GameBloc();
   final configuration = ModelGameConfiguration(Size(10,24), 250);
+  final FocusNode _keyListenerFocusNode = FocusNode();
   Size? singleBlockSize;
 
   GameEngineState? gameEngineState;
   ModelGameBlock? activeBlock;
   bool isGameRunning = false;
   int score = 0;
+
+  @override
+  void dispose() {
+    super.dispose();
+    _bloc.close();
+    _keyListenerFocusNode.dispose();
+  }
 
   @override
   void initState() {
@@ -68,13 +77,35 @@ class _ScreenGameState extends State<ScreenGame> {
     );
   }
 
+  void _onKeyEvent(KeyEvent event){
+    debugPrint("Key event: ${event.toString()}");
+    if (event is! KeyDownEvent) {
+      return;
+    }
+    switch(event.logicalKey){
+      case LogicalKeyboardKey.arrowLeft:
+        _bloc.add(GameEvent.move(EnumMoveDirection.left));
+        break;
+      case LogicalKeyboardKey.arrowUp:
+        _bloc.add(GameEvent.rotate());
+      break;
+      case LogicalKeyboardKey.arrowRight:
+        _bloc.add(GameEvent.move(EnumMoveDirection.right));
+      break;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocListener(
-        listener: _handleBlocStates,
-        bloc: _bloc,
-        child: singleBlockSize == null ? Container() : _gameBody(),
+      body: KeyboardListener(
+        onKeyEvent: _onKeyEvent,
+        focusNode: _keyListenerFocusNode,
+        child: BlocListener(
+          listener: _handleBlocStates,
+          bloc: _bloc,
+          child: singleBlockSize == null ? Container() : _gameBody(),
+        ),
       ),
     );
   }
