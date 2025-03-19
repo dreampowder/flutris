@@ -19,13 +19,20 @@ void main() {
 Widget _testBlock(ModelGameBlock gameBlock) {
   return MaterialApp(
     home: Scaffold(
-      body: Center(
-        child: RepaintBoundary( // Added RepaintBoundary
-          child: WidgetGameBlock(
-            gameBlock: gameBlock,
-            singleBlockSize: const Size(40, 40),
-          ),
-        ),
+      body: Builder(
+        builder: (context) {
+          var gridSize = Size(10,24);
+          var screenSize = MediaQuery.of(context).size;
+          var singleBlockSize = Size(screenSize.width / gridSize.width, screenSize.height / gridSize.height);
+          return Center(
+            child: RepaintBoundary( // Added RepaintBoundary
+              child: WidgetGameBlock(
+                gameBlock: gameBlock,
+                singleBlockSize: singleBlockSize,
+              ),
+            ),
+          );
+        }
       ),
     ),
   );
