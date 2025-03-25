@@ -34,10 +34,10 @@ jobs:
           path: coverage/lcov.info
 
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v4
+        uses: codecov/codecov-action@v5
         with:
-          token: ${{ secrets.CODECOV_TOKEN }} # Not needed for public repos
-          files: coverage/lcov.info
-          flags: flutter
-          name: codecov-coverage
           fail_ci_if_error: false
+          files: coverage/lcov.info # optional
+          name: codecov-flutter
+          token: ${{ secrets.CODECOV_TOKEN }}
+          verbose: true
