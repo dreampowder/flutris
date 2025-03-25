@@ -1,7 +1,7 @@
 # FLUTRIS
 
 ![Flutter CI](https://github.com/dreampowder/flutris/actions/workflows/ci.yml/badge.svg)
-[![Coverage Status](https://coveralls.io/repos/github/dreampowder/flutris/badge.svg?branch=main)](https://coveralls.io/github/dreampowder/flutris?branch=main)
+[![codecov](https://codecov.io/gh/dreampowder/flutris/branch/main/graph/badge.svg)](https://codecov.io/gh/dreampowder/flutris)
 
 One of the most common questions around TDD is how to actually implement it in frontend development — especially in complex, interactive UIs.
 

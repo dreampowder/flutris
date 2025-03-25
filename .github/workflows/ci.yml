@@ -33,6 +33,15 @@ jobs:
           name: coverage-report
           path: coverage/lcov.info
 
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }} # Not needed for public repos
+          files: coverage/lcov.info
+          flags: flutter
+          name: codecov-coverage
+          fail_ci_if_error: false
+
   build_android:
     name: Build Android APK
     needs: test
@@ -77,8 +86,8 @@ jobs:
       - name: Build IPA
         run: flutter build ipa --release --no-codesign
 
-      - name: Upload IPA
+      - name: Upload iOS xcarchive
         uses: actions/upload-artifact@v4
         with:
-          name: release-ipa
-          path: build/ios/ipa/*.ipa
+          name: ios-xcarchive
+          path: build/ios/archive/Runner.xcarchive
