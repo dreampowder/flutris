@@ -1,5 +1,4 @@
 import 'package:flutris/data/game_engine/collision_detector.dart';
-import 'package:flutris/data/game_engine/engine_helpers.dart';
 import 'package:flutris/data/game_engine/game_state_engine.dart';
 import 'package:flutris/data/models/model_game_block.dart';
 import 'package:flutris/data/models/model_game_configuration.dart';

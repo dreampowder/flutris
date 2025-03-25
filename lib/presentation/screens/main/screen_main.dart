@@ -12,7 +12,7 @@ class ScreenMain extends StatefulWidget {
 
 class _ScreenMainState extends State<ScreenMain> {
 
-  EnumMainScreenState _mainScreenState = EnumMainScreenState.mainScreen;
+  final EnumMainScreenState _mainScreenState = EnumMainScreenState.mainScreen;
 
   @override
   Widget build(BuildContext context) {

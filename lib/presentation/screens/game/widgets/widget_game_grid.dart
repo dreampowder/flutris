@@ -25,9 +25,9 @@ class GameGridPainter extends CustomPainter{
   @override
   void paint(Canvas canvas, Size size) {
 
-    final Paint linePaint = Paint()
-      ..color = Colors.black12
-      ..style = PaintingStyle.stroke;
+    // final Paint linePaint = Paint()
+    //   ..color = Colors.black12
+    //   ..style = PaintingStyle.stroke;
 
     Paint paint = Paint()
     ..color = Colors.black26

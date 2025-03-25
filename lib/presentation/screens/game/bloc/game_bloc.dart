@@ -1,16 +1,16 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:flutris/data/game_engine/enum_move_direction.dart';
 import 'package:flutris/data/game_engine/game_state_engine.dart';
 import 'package:flutris/data/models/model_game_block.dart';
 import 'package:flutris/data/models/model_game_configuration.dart';
 import 'package:flutris/data/models/type_game_state.dart';
-import 'package:flutris/data/game_engine/enum_move_direction.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+part 'game_bloc.freezed.dart';
 part 'game_event.dart';
 part 'game_state.dart';
-part 'game_bloc.freezed.dart';
 
 class GameBloc extends Bloc<GameEvent, GameState> {
 
