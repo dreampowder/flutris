@@ -41,3 +41,53 @@ jobs:
           name: codecov-flutter
           token: ${{ secrets.CODECOV_TOKEN }}
           verbose: true
+
+  build_android:
+    name: Build Android APK
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Build APK
+        run: flutter build apk --release
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-apk
+          path: build/app/outputs/flutter-apk/app-release.apk
+
+  build_ios:
+    name: Build iOS IPA
+    needs: test
+    runs-on: macos-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Build IPA
+        run: flutter build ipa --release --no-codesign
+
+      - name: Upload iOS xcarchive
+        uses: actions/upload-artifact@v4
+        with:
+          name: ios-xcarchive
+          path: build/ios/archive/Runner.xcarchive

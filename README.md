@@ -1,7 +1,8 @@
 # FLUTRIS
 
 ![Flutter CI](https://github.com/dreampowder/flutris/actions/workflows/ci.yml/badge.svg)
-[![codecov](https://codecov.io/gh/dreampowder/flutris/branch/main/graph/badge.svg)](https://codecov.io/gh/dreampowder/flutris)
+[![codecov](https://codecov.io/gh/dreampowder/flutris/graph/badge.svg?token=WZ7DJEX7SA)](https://codecov.io/gh/dreampowder/flutris)
+
 
 One of the most common questions around TDD is how to actually implement it in frontend development — especially in complex, interactive UIs.
 
@@ -62,3 +63,8 @@ CI/CD is powered by GitHub Actions. Every PR triggers:
 - Widget Tests (Golden Tests)
 - Build verification
 - Uploading builds into artifact repository
+
+
+## Code Coverage Graph
+
+![Code Coverage Graph](https://codecov.io/github/dreampowder/flutris/graphs/sunburst.svg?token=WZ7DJEX7SA)
