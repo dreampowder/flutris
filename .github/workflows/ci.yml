@@ -36,6 +36,7 @@ jobs:
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v4
         with:
+          token: ${{ secrets.CODECOV_TOKEN }} # Not needed for public repos
           files: coverage/lcov.info
           flags: flutter
           name: codecov-coverage
