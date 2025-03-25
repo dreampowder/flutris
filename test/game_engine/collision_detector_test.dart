@@ -90,14 +90,14 @@ void main(){
       block.position = Offset((block.widthCount * i).toDouble(), 22);
       stateEngine.addBlockToState(block);
     }
-    EngineHelper.debugPrintCollisionMap(configuration.gridSize, stateEngine.currentState());
+    // EngineHelper.debugPrintCollisionMap(configuration.gridSize, stateEngine.currentState());
     successfulRows = collisionDetector.detectSuccess(stateEngine.currentState());
     expect(successfulRows.length, 2, reason: "There should be 2 successful rows detected because we filled bottom with squares");
     expect(successfulRows.first, 22, reason: "22th row should be successfully detected");
     expect(successfulRows.last, 23, reason: "23rd row should be successfully detected");
     expect(successfulRows.last, 23, reason: "23rd row should be successfully detected");
     stateEngine.tick();
-    EngineHelper.debugPrintCollisionMap(configuration.gridSize, stateEngine.currentState());
+    // EngineHelper.debugPrintCollisionMap(configuration.gridSize, stateEngine.currentState());
   });
 
 }

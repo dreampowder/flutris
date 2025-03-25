@@ -56,7 +56,6 @@ class GameStateEngine{
   }
 
   void addBlockToState(ModelGameBlock updatedBlock){
-    debugPrint("Adding color: ${updatedBlock.color}");
     for (var coords in updatedBlock.filledCoordinates) {
       _gameState[coords.y]?[coords.x] = coords.color;
     }
